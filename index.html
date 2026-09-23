@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="te">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI Venue Finder</title>
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         body { background-color: #f0f2f5; padding: 20px; display: flex; justify-content: center; }
         .container { max-width: 600px; width: 100%; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
         h1 { text-align: center; color: #1a73e8; margin-bottom: 10px; }
@@ -15,16 +15,18 @@
         button:hover { background: #1557b0; }
         #results { margin-top: 20px; }
         .venue-card { background: #f8f9fa; border-left: 4px solid #1a73e8; padding: 15px; margin-bottom: 10px; border-radius: 4px; }
+        .venue-card h3 { margin-bottom: 5px; color: #333; }
+        .venue-card p { text-align: left; margin-bottom: 0; font-size: 14px; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>🏰 AI Venue Finder</h1>
-    <p>మీ ఈవెంట్ అవసరాలను వివరించండి</p>
+    <p>Describe your event requirements (Location, Guests, Budget)</p>
     
-    <textarea id="userInput" placeholder="ఉదా: హైదరాబాద్‌లోని గచ్చిబౌలిలో 100 మందికి సరిపోయే ఫంక్షన్ హాల్..."></textarea>
-    <button onclick="searchVenues()">వెన్యూల కోసం వెతకండి</button>
+    <textarea id="userInput" placeholder="E.g. Looking for a budget AC banquet hall in Gachibowli, Hyderabad for 100 guests..."></textarea>
+    <button onclick="searchVenues()">Find Venues</button>
 
     <div id="results"></div>
 </div>
@@ -35,21 +37,23 @@
         const resultsDiv = document.getElementById('results');
 
         if (!query.trim()) {
-            alert("దయచేసి మీ అవసరాలను ఎంటర్ చేయండి!");
+            alert("Please enter your event requirements!");
             return;
         }
 
-        resultsDiv.innerHTML = "<p style='text-align:center;'>AI వెన్యూలను చూస్తోంది... ⏳</p>";
+        resultsDiv.innerHTML = "<p style='text-align:center;'>AI is searching for suitable venues... ⏳</p>";
 
         setTimeout(() => {
             resultsDiv.innerHTML = `
                 <div class="venue-card">
-                    <h3>1. SSR ఫంక్షన్ హాల్ - గచ్చిబౌలి</h3>
-                    <p><b>కెపాసిటీ:</b> 150 మంది | <b>బడ్జెట్:</b> ₹25,000</p>
+                    <h3>1. SSR Function Hall - Gachibowli</h3>
+                    <p><b>Capacity:</b> 150 Guests | <b>Budget:</b> ₹25,000</p>
+                    <p>Includes AC, parking, and dining facilities.</p>
                 </div>
                 <div class="venue-card">
-                    <h3>2. గ్రీన్ లీఫ్ కన్వెన్షన్ - మాదాపూర్</h3>
-                    <p><b>కెపాసిటీ:</b> 100 మంది | <b>బడ్జెట్:</b> ₹30,000</p>
+                    <h3>2. Green Leaf Convention - Madhapur</h3>
+                    <p><b>Capacity:</b> 100 Guests | <b>Budget:</b> ₹30,000</p>
+                    <p>Rooftop party space with catering options available.</p>
                 </div>
             `;
         }, 1500);
