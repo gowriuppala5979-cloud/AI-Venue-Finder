@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Venue Finder</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: sans-serif; }
+        body { background-color: #f0f2f5; padding: 20px; display: flex; justify-content: center; }
+        .container { max-width: 600px; width: 100%; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #1a73e8; margin-bottom: 10px; }
+        p { text-align: center; color: #666; margin-bottom: 20px; }
+        textarea { width: 100%; height: 90px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; resize: none; margin-bottom: 15px; }
+        button { width: 100%; background: #1a73e8; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #1557b0; }
+        #results { margin-top: 20px; }
+        .venue-card { background: #f8f9fa; border-left: 4px solid #1a73e8; padding: 15px; margin-bottom: 10px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏰 AI Venue Finder</h1>
+    <p>మీ ఈవెంట్ అవసరాలను వివరించండి</p>
+    
+    <textarea id="userInput" placeholder="ఉదా: హైదరాబాద్‌లోని గచ్చిబౌలిలో 100 మందికి సరిపోయే ఫంక్షన్ హాల్..."></textarea>
+    <button onclick="searchVenues()">వెన్యూల కోసం వెతకండి</button>
+
+    <div id="results"></div>
+</div>
+
+<script>
+    async function searchVenues() {
+        const query = document.getElementById('userInput').value;
+        const resultsDiv = document.getElementById('results');
+
+        if (!query.trim()) {
+            alert("దయచేసి మీ అవసరాలను ఎంటర్ చేయండి!");
+            return;
+        }
+
+        resultsDiv.innerHTML = "<p style='text-align:center;'>AI వెన్యూలను చూస్తోంది... ⏳</p>";
+
+        setTimeout(() => {
+            resultsDiv.innerHTML = `
+                <div class="venue-card">
+                    <h3>1. SSR ఫంక్షన్ హాల్ - గచ్చిబౌలి</h3>
+                    <p><b>కెపాసిటీ:</b> 150 మంది | <b>బడ్జెట్:</b> ₹25,000</p>
+                </div>
+                <div class="venue-card">
+                    <h3>2. గ్రీన్ లీఫ్ కన్వెన్షన్ - మాదాపూర్</h3>
+                    <p><b>కెపాసిటీ:</b> 100 మంది | <b>బడ్జెట్:</b> ₹30,000</p>
+                </div>
+            `;
+        }, 1500);
+    }
+</script>
+
+</body>
+</html>
