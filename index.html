@@ -13,10 +13,8 @@
         textarea { width: 100%; height: 90px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 15px; resize: none; margin-bottom: 15px; }
         button { width: 100%; background: #1a73e8; color: white; border: none; padding: 12px; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: bold; }
         button:hover { background: #1557b0; }
-        #results { margin-top: 20px; }
-        .venue-card { background: #f8f9fa; border-left: 4px solid #1a73e8; padding: 15px; margin-bottom: 10px; border-radius: 4px; }
-        .venue-card h3 { margin-bottom: 5px; color: #333; }
-        .venue-card p { text-align: left; margin-bottom: 0; font-size: 14px; }
+        #results { margin-top: 20px; line-height: 1.6; }
+        .venue-card { background: #f8f9fa; border-left: 4px solid #1a73e8; padding: 15px; margin-bottom: 10px; border-radius: 4px; white-space: pre-line; }
     </style>
 </head>
 <body>
@@ -25,13 +23,15 @@
     <h1>🏰 AI Venue Finder</h1>
     <p>Describe your event requirements (Location, Guests, Budget)</p>
     
-    <textarea id="userInput" placeholder="E.g. Looking for a budget AC banquet hall in Gachibowli, Hyderabad for 100 guests..."></textarea>
+    <textarea id="userInput" placeholder="E.g. Looking for a budget AC banquet hall in Vizianagaram for 200 guests..."></textarea>
     <button onclick="searchVenues()">Find Venues</button>
 
     <div id="results"></div>
 </div>
 
 <script>
+    const API_KEY = "YOUR_GEMINI_API_KEY_HERE"; // ఇక్కడ మీ API Key పెట్టాలి
+
     async function searchVenues() {
         const query = document.getElementById('userInput').value;
         const resultsDiv = document.getElementById('results');
@@ -41,22 +41,28 @@
             return;
         }
 
-        resultsDiv.innerHTML = "<p style='text-align:center;'>AI is searching for suitable venues... ⏳</p>";
+        resultsDiv.innerHTML = "<p style='text-align:center;'>AI is searching real venues for you... ⏳</p>";
 
-        setTimeout(() => {
-            resultsDiv.innerHTML = `
-                <div class="venue-card">
-                    <h3>1. SSR Function Hall - Gachibowli</h3>
-                    <p><b>Capacity:</b> 150 Guests | <b>Budget:</b> ₹25,000</p>
-                    <p>Includes AC, parking, and dining facilities.</p>
-                </div>
-                <div class="venue-card">
-                    <h3>2. Green Leaf Convention - Madhapur</h3>
-                    <p><b>Capacity:</b> 100 Guests | <b>Budget:</b> ₹30,000</p>
-                    <p>Rooftop party space with catering options available.</p>
-                </div>
-            `;
-        }, 1500);
+        try {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contents: [{
+                        parts: [{
+                            text: `You are an expert venue finder assistant. Find 3 realistic venue options based on this user request: "${query}". For each venue, list Name, Location, Estimated Capacity, and key amenities. Format nicely with bullet points.`
+                        }]
+                    }]
+                })
+            });
+
+            const data = await response.json();
+            const aiText = data.candidates[0].content.parts[0].text;
+
+            resultsDiv.innerHTML = `<div class="venue-card">${aiText}</div>`;
+        } catch (error) {
+            resultsDiv.innerHTML = "<p style='color:red; text-align:center;'>Error fetching venues. Please check your API Key.</p>";
+        }
     }
 </script>
 
